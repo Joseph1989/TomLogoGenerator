@@ -3,7 +3,7 @@
         integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
         crossorigin="anonymous"></script>
 <!--<script src="js.js"></script>-->
-<canvas id="logo-generator" width="270" height="150" style="background: #fff">
+<canvas id="logo-generator" width="640" height="300" style="background:#fff; width:80%;margin:auto">
 
 </canvas>
 <input id="city-name" type="text" placeholder="City Name" />
@@ -18,38 +18,47 @@
 <script>
     var ctx = document.getElementById('logo-generator').getContext('2d');
     var tomLogo = new Image;
+    var imageHeight = 0;
     var companyTitle = "";
     var eventDate = "";
     var height = 2;
-    var mainWidth = 330;
-    var mainHeigth = 150;
+    var mainWidth = 640;
+    var mainHeigth = 300;
     var canvasHeight = mainHeigth;
     ctx.canvas.width = mainWidth;
     tomLogo.src = "tomlogo.PNG";
 
-     function writeLogo() {
+     function writeLogoBotom() {
         var cityName = $('#city-name').val();
         var eventDate = $('#event-date').val();
+         var x = document.getElementById("fileUpload").value;
+         ctx.fillStyle="white";
+         if (x.length > 0) {
+             ctx.fillRect(0,canvasHeight-mainHeigth,mainWidth,canvasHeight);
+         } else {
+             ctx.fillRect(0,0,mainWidth,canvasHeight);
+         }
         ctx.beginPath();
         ctx.moveTo(1,1+height);
         ctx.lineTo(mainWidth,1+height);
         ctx.strokeStyle = '#de8975';
         ctx.stroke();
-        ctx.moveTo(1,74+height);
-        ctx.lineTo(mainWidth,74+height);
+        ctx.moveTo(1,148+height);
+        ctx.lineTo(mainWidth,142+height);
         ctx.stroke();
+         ctx.fillStyle="#1c1c1c";
         ctx.textAlign = "center";
-        ctx.font="22px sans-serif";
-        ctx.fillText(eventDate,  mainWidth/2, 98+height);
-         ctx.drawImage(tomLogo,4,8+height,125,61);
-         ctx.font="35px sans-serif";
+        ctx.font="42px sans-serif";
+        ctx.fillText(eventDate,  mainWidth/2, 196+height);
+         ctx.drawImage(tomLogo,4,8+height,250,121);
+         ctx.font="68px sans-serif";
          ctx.textAlign="left";
-         ctx.fillText(" : " + cityName, 129, 47+height);
+         ctx.fillText(" : " + cityName, 258, 90+height);
     }
 
     $('button').click(function() {
         ctx.clearRect(0, height, mainWidth, mainHeigth);
-        writeLogo();
+        writeLogoBotom();
     });
 
 
@@ -68,12 +77,13 @@
                 img.addEventListener("load", function() {
                     canvasHeight = mainHeigth;
                     var width = img.width/mainWidth;
+                    imageHeight = img.height;
                     console.log(width);
-                    height = img.height/width;
+                    height = imageHeight/width;
                     canvasHeight += height;
                     ctx.canvas.height = canvasHeight;
-                    ctx.drawImage(img, 0, 0, mainWidth-1,height);
-                    writeLogo();
+                    writeLogoBotom();
+                    ctx.drawImage(img, 0, 0, mainWidth,height);
 
                 });
                 img.src = e.target.result;
